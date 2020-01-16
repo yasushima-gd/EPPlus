@@ -910,12 +910,12 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
             }
         }
 
-    private static bool IsWithinPage(int row, ColumnIndex column, int pagePos)
-    {
-        return (row >= column._pages[pagePos].MinIndex && row <= column._pages[pagePos].MaxIndex);
-    }
+        private static bool IsWithinPage(int row, ColumnIndex column, int pagePos)
+        {
+            return (row >= column._pages[pagePos].MinIndex && row <= column._pages[pagePos].MaxIndex);
+        }
 
-    internal void Clear(int fromRow, int fromCol, int rows, int columns)
+        internal void Clear(int fromRow, int fromCol, int rows, int columns)
         {
             Delete(fromRow, fromCol, rows, columns, false);
         }
