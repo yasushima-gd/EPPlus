@@ -2212,11 +2212,6 @@ namespace OfficeOpenXml
                     else
                     {
                         newAddr = addr.AddRow(row, rows);
-                        if (newAddr.Address != addr.Address)
-                        {
-                        //    _mergedCells._cells.Insert(row, 0, rows, 0);
-                            _mergedCells.SetIndex(newAddr, i);
-                        }
                     }
 
                     if (newAddr.Address != addr.Address)
