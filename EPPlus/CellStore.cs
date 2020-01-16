@@ -919,11 +919,11 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
         {
             Delete(fromRow, fromCol, rows, columns, false);
         }
-        internal void Delete(int fromRow, int fromCol, int rows, int columns)
+        internal void Delete(int fromRow, int fromCol, int rows, int columns, Dictionary<T, T> updateValues = null)
         {
-            Delete(fromRow, fromCol, rows, columns, true);
+            Delete(fromRow, fromCol, rows, columns, true, updateValues);
         }
-        internal void Delete(int fromRow, int fromCol, int rows, int columns, bool shift)
+        internal void Delete(int fromRow, int fromCol, int rows, int columns, bool shift, Dictionary<T, T> updateValues = null)
         {
             lock (_columnIndex)
             {
@@ -996,6 +996,16 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
                                 }
                             }
                         }
+                    }
+                }
+
+                if (updateValues != null)
+                {
+                    for (int i = 0; i < _values.Count; ++i)
+                    {
+                        var oldValue = _values[i];
+                        var newValue = updateValues[oldValue];
+                            _values[i] = newValue;
                     }
                 }
             }

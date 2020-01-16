@@ -2194,16 +2194,7 @@ namespace OfficeOpenXml
         /// <param name="delete"></param>
         private void FixMergedCellsRow(int row, int rows, bool delete)
         {
-            if (delete)
-            {
-                _mergedCells._cells.Delete(row, 0, rows, 0);
-            }
-            else
-            {
-                _mergedCells._cells.Insert(row, 0, rows, 0);
-            }
-
-            List<int> removeIndex = new List<int>();
+            List<int> removeIndices = new List<int>();
             for (int i = 0; i < _mergedCells.Count; i++)
             {
                 if (!string.IsNullOrEmpty( _mergedCells[i]))
@@ -2214,7 +2205,7 @@ namespace OfficeOpenXml
                         newAddr = addr.DeleteRow(row, rows);
                         if (newAddr == null)
                         {
-                            removeIndex.Add(i);
+                            removeIndices.Add(i);
                             continue;
                         }
                     }
@@ -2234,9 +2225,45 @@ namespace OfficeOpenXml
                     }
                 }
             }
-            for (int i = removeIndex.Count - 1; i >= 0; i--)
+
+            if (delete)
             {
-                _mergedCells.List.RemoveAt(removeIndex[i]);
+                Dictionary<int, int> updateValues = null;
+                if (removeIndices.Count > 0)
+                {
+                    updateValues = new Dictionary<int, int>();
+                    updateValues.Add(-1, -1); // invalid value to invalid value
+                    int gap = 0;
+                    int j = 0;
+                    int removeIndex = removeIndices[j];
+                    for (int i = 0; i < _mergedCells.List.Count; i++)
+                    {
+                        int v;
+                        if (i == removeIndex)
+                        {
+                            v = -1;
+                            gap++;
+                            j++;
+                            if (j < removeIndices.Count)
+                                removeIndex = removeIndices[j];
+                        }
+                        else
+                        {
+                            v = i - gap;
+                        }
+                        updateValues.Add(i, v);
+                    }
+                }
+                _mergedCells._cells.Delete(row, 1, rows, ExcelPackage.MaxColumns, updateValues);
+            }
+            else
+            {
+                _mergedCells._cells.Insert(row, 0, rows, 0);
+            }
+
+            for (int i = removeIndices.Count - 1; i >= 0; i--)
+            {
+                _mergedCells.List.RemoveAt(removeIndices[i]);
             }
         }
         /// <summary>
