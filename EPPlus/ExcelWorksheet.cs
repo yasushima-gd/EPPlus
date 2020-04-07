@@ -3549,7 +3549,7 @@ namespace OfficeOpenXml
                 var col=cse.Value._value as ExcelColumn;
                 if (col != null && col.PageBreak)
                 {
-                    breaks.AppendFormat("<brk id=\"{0}\" max=\"16383\" man=\"1\"/>", cse.Column);
+                    breaks.AppendFormat("<brk id=\"{0}\" max=\"1048575\" man=\"1\"/>", cse.Column);
                     count++;
                 }
             }
@@ -3570,7 +3570,7 @@ namespace OfficeOpenXml
                 var row=cse.Value._value as RowInternal;
                 if (row != null && row.PageBreak)
                 {
-                    breaks.AppendFormat("<brk id=\"{0}\" max=\"1048575\" man=\"1\"/>", cse.Row);
+                    breaks.AppendFormat("<brk id=\"{0}\" max=\"16383\" man=\"1\"/>", cse.Row);
                     count++;
                 }
             }
