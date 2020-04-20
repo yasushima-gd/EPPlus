@@ -2426,5 +2426,50 @@ namespace EPPlusTest
             ws.Cells["A2:A64515"].Sort(sortColumns);
             SaveWorksheet("Issue345_saved.xlsx");
         }
+        [TestMethod]
+        public void IssueGodai_MergeCellInfoRemainsAfterRowDeletion()
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet ws = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelRange range;
+
+                range = ws.Cells["B2:C2"];
+                range.Merge = true;
+                range.Value = "merged 1";
+
+                range = ws.Cells["B4:C4"];
+                range.Merge = true;
+                range.Value = "merged 2";
+
+                ws.DeleteRow(2);
+                var rangeFrom = ws.Cells["B4:C4"];
+                var rangeTo = ws.Cells["B6:C6"];
+                rangeFrom.Copy(rangeTo);
+            }
+        }
+        [TestMethod]
+        public void IssueGodai_MergeCellInfoRemainsAfterRowInsertion()
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet ws = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelRange range;
+
+                range = ws.Cells["B2:C2"];
+                range.Merge = true;
+                range.Value = "merged 1";
+
+                range = ws.Cells["B4:C4"];
+                range.Merge = true;
+                range.Value = "merged 2";
+
+                ws.InsertRow(2, 1);
+                ws.DeleteRow(3);
+                var rangeFrom = ws.Cells["B3:C3"];
+                var rangeTo = ws.Cells["B6:C6"];
+                rangeFrom.Copy(rangeTo);
+            }
+        }
     }
 }

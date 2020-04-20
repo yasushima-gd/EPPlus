@@ -910,20 +910,20 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
             }
         }
 
-    private static bool IsWithinPage(int row, ColumnIndex column, int pagePos)
-    {
-        return (row >= column._pages[pagePos].MinIndex && row <= column._pages[pagePos].MaxIndex);
-    }
+        private static bool IsWithinPage(int row, ColumnIndex column, int pagePos)
+        {
+            return (row >= column._pages[pagePos].MinIndex && row <= column._pages[pagePos].MaxIndex);
+        }
 
-    internal void Clear(int fromRow, int fromCol, int rows, int columns)
+        internal void Clear(int fromRow, int fromCol, int rows, int columns)
         {
             Delete(fromRow, fromCol, rows, columns, false);
         }
-        internal void Delete(int fromRow, int fromCol, int rows, int columns)
+        internal void Delete(int fromRow, int fromCol, int rows, int columns, Dictionary<T, T> updateValues = null)
         {
-            Delete(fromRow, fromCol, rows, columns, true);
+            Delete(fromRow, fromCol, rows, columns, true, updateValues);
         }
-        internal void Delete(int fromRow, int fromCol, int rows, int columns, bool shift)
+        internal void Delete(int fromRow, int fromCol, int rows, int columns, bool shift, Dictionary<T, T> updateValues = null)
         {
             lock (_columnIndex)
             {
@@ -996,6 +996,16 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
                                 }
                             }
                         }
+                    }
+                }
+
+                if (updateValues != null)
+                {
+                    for (int i = 0; i < _values.Count; ++i)
+                    {
+                        var oldValue = _values[i];
+                        var newValue = updateValues[oldValue];
+                            _values[i] = newValue;
                     }
                 }
             }
