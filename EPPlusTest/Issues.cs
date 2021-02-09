@@ -2471,5 +2471,47 @@ namespace EPPlusTest
                 rangeFrom.Copy(rangeTo);
             }
         }
+
+        [TestMethod]
+        public void IssueGodai_DeleteRowAfter1024InsertRowDeleteRow()
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                var ws = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelRange range;
+                int i = 0;
+                range = ws.Cells[1023, 1];
+                range.Value = ++i;
+                ws.InsertRow(1, 2);
+                range = ws.Cells[1025, 1];
+                range.Value = ++i;
+                ws.DeleteRow(10, 2);
+
+                range = ws.Cells[1024, 1];
+                range.Value = ++i;
+
+                ws.DeleteRow(1024);
+            }
+        }
+
+        [TestMethod]
+        public void IssueGodai_DeleteRowAfter1024InsertRowDeleteRow2()
+        {
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                var ws = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelRange range;
+                int i = 0;
+                range = ws.Cells[1023, 1];
+                range.Value = ++i;
+
+                ws.InsertRow(1023, 2);
+
+                range = ws.Cells[2048, 1];
+                range.Value = ++i;
+
+                ws.DeleteRow(2048);
+            }
+        }
     }
 }
