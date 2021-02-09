@@ -13,26 +13,26 @@ namespace EPPlusTest
 {
     [DeploymentItem("Workbooks", "targetFolder")]
     [TestClass]
-    public class CalculationTests
+    public class CalculationTests : TestBase
     {
         //[TestMethod]
         //public void Calulation()
         //{
-        //    var pck = new ExcelPackage(new FileInfo("c:\\temp\\chain.xlsx"));
+        //    var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, "chain.xlsx")));
         //    pck.Workbook.Calculate();
         //    Assert.AreEqual(50D, pck.Workbook.Worksheets[1].Cells["C1"].Value);
         //}
         //[TestMethod]
         //public void Calulation2()
         //{
-        //    var pck = new ExcelPackage(new FileInfo("c:\\temp\\chainTest.xlsx"));
+        //    var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, "chainTest.xlsx")));
         //    pck.Workbook.Calculate();
         //    Assert.AreEqual(1124999960382D, pck.Workbook.Worksheets[1].Cells["C1"].Value);
         //}
         //[TestMethod]
         //public void Calulation3()
         //{
-        //    var pck = new ExcelPackage(new FileInfo("c:\\temp\\names.xlsx"));
+        //    var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, "names.xlsx")));
         //    pck.Workbook.Calculate();
         //    //Assert.AreEqual(1124999960382D, pck.Workbook.Worksheets[1].Cells["C1"].Value);
         //}
@@ -156,7 +156,7 @@ namespace EPPlusTest
         [TestMethod]
         public void TestOneCell()
         {
-            var pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Test4.xlsm"));
+            var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"EPPlusTestark\Test4.xlsm")));
             var ws = pck.Workbook.Worksheets.First(); 
             pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Calculate();
             Assert.AreEqual(0d, pck.Workbook.Worksheets["Räntebärande formaterat utland"].Cells["M13"].Value);  
@@ -165,7 +165,7 @@ namespace EPPlusTest
         [TestMethod]
         public void TestPrecedence()
         {
-            var pck = new ExcelPackage(new FileInfo(@"C:\temp\EPPlusTestark\Precedence.xlsx"));
+            var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"EPPlusTestark\Precedence.xlsx")));
             var ws = pck.Workbook.Worksheets.Last();
             pck.Workbook.Calculate();
             Assert.AreEqual(150d, ws.Cells["A1"].Value);
@@ -174,7 +174,7 @@ namespace EPPlusTest
         [TestMethod]
         public void TestDataType()
         {
-            var pck = new ExcelPackage(new FileInfo(@"c:\temp\EPPlusTestark\calc_amount.xlsx"));
+            var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"EPPlusTestark\calc_amount.xlsx")));
             var ws = pck.Workbook.Worksheets.First();
             //ws.Names.Add("Name1",ws.Cells["A1"]);
             //ws.Names.Add("Name2", ws.Cells["A2"]);
@@ -291,7 +291,7 @@ namespace EPPlusTest
         {
             StringBuilder sb=new StringBuilder();
             //Add sheets to test in this directory or change it to your testpath.
-            string path = @"C:\temp\EPPlusTestark\workbooks";
+            string path = Path.Combine(_worksheetPath, @"EPPlusTestark\workbooks");
             if(!Directory.Exists(path)) return;
 
             foreach (var file in Directory.GetFiles(path, "*.xls*"))
@@ -361,7 +361,7 @@ namespace EPPlusTest
                 var errors = new List<Tuple<string, object, object>>();
                 ExcelWorksheet sheet=null;
                 string adr="";
-                var fileErr = new System.IO.StreamWriter(new FileStream("c:\\temp\\err.txt",FileMode.Append));
+                var fileErr = new System.IO.StreamWriter(new FileStream(Path.Combine(_worksheetPath, "err.txt"), FileMode.Append));
                 foreach (var cell in fr.Keys)
                 {
                     try

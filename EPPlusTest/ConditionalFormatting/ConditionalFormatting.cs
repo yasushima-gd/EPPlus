@@ -15,16 +15,16 @@ namespace EPPlusTest
   /// Test the Conditional Formatting feature
   /// </summary>
   [TestClass]
-  public class ConditionalFormatting
+  public class ConditionalFormatting : TestBase
   {
     private TestContext testContextInstance;
-    private static ExcelPackage _pck;
+    new private static ExcelPackage _pck;
 
     /// <summary>
     ///Gets or sets the test context which provides
     ///information about and functionality for the current test run.
     ///</summary>
-    public TestContext TestContext
+    new public TestContext TestContext
     {
       get
       {
@@ -92,7 +92,7 @@ namespace EPPlusTest
     [Ignore]
     public void ReadConditionalFormatting()
     {
-      var pck = new ExcelPackage(new FileInfo(@"c:\temp\cf.xlsx"));
+      var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"cf.xlsx")));
 
       var ws = pck.Workbook.Worksheets[1];
       Assert.IsTrue(ws.ConditionalFormatting.Count == 6);
@@ -102,7 +102,7 @@ namespace EPPlusTest
       //cf1.Formula = "TRUE";
       var cf2 = ws.Cells["C8:C12"].ConditionalFormatting.AddExpression();
       var cf3 = ws.Cells["d12:D22,H12:H22"].ConditionalFormatting.AddFourIconSet(eExcelconditionalFormatting4IconsSetType.RedToBlack);
-      pck.SaveAs(new FileInfo(@"c:\temp\cf2.xlsx"));
+      pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"cf2.xlsx")));
     }
     /// <summary>
     /// 
@@ -111,10 +111,10 @@ namespace EPPlusTest
     [Ignore]
     public void ReadConditionalFormattingError()
     {
-      var pck = new ExcelPackage(new FileInfo(@"c:\temp\CofCTemplate.xlsx"));
+      var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"CofCTemplate.xlsx")));
 
       var ws = pck.Workbook.Worksheets[1];
-      pck.SaveAs(new FileInfo(@"c:\temp\cf2.xlsx"));
+      pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"cf2.xlsx")));
     }
     /// <summary>
     /// 

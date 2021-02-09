@@ -816,7 +816,7 @@ namespace EPPlusTest
         [Ignore]
         public void ReadMultiChartSeries()
         {
-            ExcelPackage pck = new ExcelPackage(new FileInfo("c:\\temp\\chartseries.xlsx"), true);
+            ExcelPackage pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, "chartseries.xlsx")), true);
 
             var ws = pck.Workbook.Worksheets[1];
             ExcelChart c = ws.Drawings[0] as ExcelChart;
@@ -846,7 +846,7 @@ namespace EPPlusTest
             var serie5 = subChart.Series.Add("R7:R15","Q7:Q15");
             serie5.Header = "Line 2";
 
-            pck.SaveAs(new FileInfo("c:\\temp\\chartseriesnew.xlsx"));
+            pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, "chartseriesnew.xlsx")));
         }
         [Ignore]
         [TestMethod]
@@ -859,26 +859,26 @@ namespace EPPlusTest
             wsChart.Chart.Style = eChartStyle.Style23;
             wsChart.Chart.Title.Text = "Chart worksheet";
             wsChart.Chart.Series[0].Header = "Serie";
-            _pck.SaveAs(new FileInfo(@"c:\temp\chart.xlsx"));
+            _pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"chart.xlsx")));
         }
         [Ignore]
         [TestMethod]
         public void ReadChartWorksheet()
         {
-            _pck = new ExcelPackage(new FileInfo(@"c:\temp\chart.xlsx"));
+            _pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"chart.xlsx")));
             var chart = ((ExcelChartsheet)_pck.Workbook.Worksheets[1]).Chart;
 
-            _pck.SaveAs(new FileInfo(@"c:\temp\chart.xlsx"));
+            _pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"chart.xlsx")));
 
         }
         [Ignore]
         [TestMethod]
         public void ReadWriteSmoothChart()
         {
-            _pck = new ExcelPackage(new FileInfo(@"c:\temp\bug\Xds_2014_TEST.xlsx"));
+            _pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\Xds_2014_TEST.xlsx")));
             var chart = _pck.Workbook.Worksheets[1].Drawings[0] as ExcelChart;
             _pck.Workbook.Worksheets[1].Cells["B2"].Value = 33;
-            _pck.SaveAs(new FileInfo(@"c:\temp\chart.xlsx"));
+            _pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"chart.xlsx")));
 
         }
         [TestMethod]
@@ -970,11 +970,11 @@ namespace EPPlusTest
         [TestMethod]
         public void DrawingWidthAdjust()
         {
-            //using (var p = new ExcelPackage(new FileInfo(@"C:\build\AIM\projects\aimweb\Web\ExcelTemplates\MainTemplate.xlsx")))
+            //using (var p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"build\AIM\projects\aimweb\Web\ExcelTemplates\MainTemplate.xlsx"))))
             //{
             //    var ws = p.Workbook.Worksheets[2];
             //    ws.Column(4).Width = 40;
-            //    p.SaveAs(new FileInfo(@"c:\temp\colwidthAdjust.xlsx"));
+            //    p.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"colwidthAdjust.xlsx")));
             //}
         }
     }

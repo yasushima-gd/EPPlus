@@ -6,7 +6,7 @@ using OfficeOpenXml.FormulaParsing;
 
 namespace EPPlusTest.FormulaParsing.IntegrationTests
 {
-    public abstract class FormulaParserTestBase
+    public abstract class FormulaParserTestBase : TestBase
     {
         protected FormulaParser _parser;
     }

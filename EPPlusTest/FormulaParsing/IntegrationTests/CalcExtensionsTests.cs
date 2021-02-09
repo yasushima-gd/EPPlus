@@ -6,12 +6,12 @@ using OfficeOpenXml;
 namespace EPPlusTest.FormulaParsing.IntegrationTests
 {
     [TestClass]
-    public class CalcExtensionsTests
+    public class CalcExtensionsTests : TestBase
     {
         [TestMethod]
         public void ShouldCalculateChainTest()
         {
-            var package = new ExcelPackage(new FileInfo("c:\\temp\\chaintest.xlsx"));
+            var package = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, "chaintest.xlsx")));
             package.Workbook.Calculate();
         }
 

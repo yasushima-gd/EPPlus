@@ -1118,7 +1118,7 @@ namespace EPPlusTest
             var ws = _pck.Workbook.Worksheets.Add("FormulaError");
 
             ws.Cells["E2:E5"].CreateArrayFormula("FREQUENCY(B2:B18,C2:C5)");
-            _pck.SaveAs(new FileInfo("c:\\temp\\arrayformula.xlsx"));
+            _pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, "arrayformula.xlsx")));
         }
         //[Ignore]
         //[TestMethod]
@@ -1502,7 +1502,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Stylebug()
         {
-            ExcelPackage p = new ExcelPackage(new FileInfo(@"c:\temp\FullProjecte.xlsx"));
+            ExcelPackage p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"FullProjecte.xlsx")));
 
             var ws = p.Workbook.Worksheets.First();
             ws.Cells[12, 1].Value = 0;
@@ -1533,13 +1533,13 @@ namespace EPPlusTest
             ws.InsertRow(19, 1, 19);
             ws.InsertRow(26, 1, 26);
             ws.InsertRow(33, 1, 33);
-            p.SaveAs(new FileInfo(@"c:\temp\FullProjecte_new.xlsx"));
+            p.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"FullProjecte_new.xlsx")));
         }
         [Ignore]
         [TestMethod]
         public void ReadBug()
         {
-            using (var package = new ExcelPackage(new FileInfo(@"c:\temp\error.xlsx")))
+            using (var package = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"error.xlsx"))))
             {
                 var fulla = package.Workbook.Worksheets.FirstOrDefault();
                 var r = fulla == null ? null : fulla.Cells["a:a"]
@@ -1600,12 +1600,12 @@ namespace EPPlusTest
         [TestMethod]
         public void URL()
         {
-            var p = new ExcelPackage(new FileInfo(@"c:\temp\url.xlsx"));
+            var p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"url.xlsx")));
             foreach (var ws in p.Workbook.Worksheets)
             {
 
             }
-            p.SaveAs(new FileInfo(@"c:\temp\urlsaved.xlsx"));
+            p.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"urlsaved.xlsx")));
         }
 
         //[TestMethod]
@@ -1752,20 +1752,20 @@ namespace EPPlusTest
             ws.Cells["A4"].LoadFromText("\"1,3\",\"\",\"12,2\",\"Test\"\"\"", new ExcelTextFormat() { TextQualifier = '"' });
 
             ws = _pck.Workbook.Worksheets.Add("File1");
-            if(File.Exists(@"c:\temp\csv\et1c1004.csv"))
-                ws.Cells["A1"].LoadFromText(new FileInfo(@"c:\temp\csv\et1c1004.csv"), new ExcelTextFormat() {SkipLinesBeginning=3,SkipLinesEnd=1, EOL="\n"});
+            if(File.Exists(Path.Combine(_worksheetPath, @"csv\et1c1004.csv")))
+                ws.Cells["A1"].LoadFromText(new FileInfo(Path.Combine(_worksheetPath, @"csv\et1c1004.csv")), new ExcelTextFormat() {SkipLinesBeginning=3,SkipLinesEnd=1, EOL="\n"});
 
             ws = _pck.Workbook.Worksheets.Add("File2");
-            if (File.Exists(@"c:\temp\csv\etiv2812.csv"))
-                ws.Cells["A1"].LoadFromText(new FileInfo(@"c:\temp\csv\etiv2812.csv"), new ExcelTextFormat() { SkipLinesBeginning = 3, SkipLinesEnd = 1, EOL = "\n" });
+            if (File.Exists(Path.Combine(_worksheetPath, @"csv\etiv2812.csv")))
+                ws.Cells["A1"].LoadFromText(new FileInfo(Path.Combine(_worksheetPath, @"csv\etiv2812.csv")), new ExcelTextFormat() { SkipLinesBeginning = 3, SkipLinesEnd = 1, EOL = "\n" });
 
             ws = _pck.Workbook.Worksheets.Add("File3");
-            if (File.Exists(@"c:\temp\csv\last_gics.txt"))
-                ws.Cells["A1"].LoadFromText(new FileInfo(@"c:\temp\csv\last_gics.txt"), new ExcelTextFormat() { SkipLinesBeginning = 1, Delimiter='|'});
+            if (File.Exists(Path.Combine(_worksheetPath, @"csv\last_gics.txt")))
+                ws.Cells["A1"].LoadFromText(new FileInfo(Path.Combine(_worksheetPath, @"csv\last_gics.txt")), new ExcelTextFormat() { SkipLinesBeginning = 1, Delimiter='|'});
 
             ws = _pck.Workbook.Worksheets.Add("File4");
-            //if (File.Exists(@"c:\temp\csv\20060927.custom_open_positions.cdf.SPP"))
-            //    ws.Cells["A1"].LoadFromText(new FileInfo(@"c:\temp\csv\20060927.custom_open_positions.cdf.SPP"), new ExcelTextFormat() { SkipLinesBeginning = 2, SkipLinesEnd=2, TextQualifier='"', DataTypes=new eDataTypes[] {eDataTypes.Number,eDataTypes.String, eDataTypes.Number, eDataTypes.Number, eDataTypes.Number, eDataTypes.String, eDataTypes.Number, eDataTypes.Number, eDataTypes.String, eDataTypes.String, eDataTypes.Number, eDataTypes.Number, eDataTypes.Number}},
+            //if (File.Exists(Path.Combine(_worksheetPath, @"csv\20060927.custom_open_positions.cdf.SPP")))
+            //    ws.Cells["A1"].LoadFromText(new FileInfo(Path.Combine(_worksheetPath, @"csv\20060927.custom_open_positions.cdf.SPP")), new ExcelTextFormat() { SkipLinesBeginning = 2, SkipLinesEnd=2, TextQualifier='"', DataTypes=new eDataTypes[] {eDataTypes.Number,eDataTypes.String, eDataTypes.Number, eDataTypes.Number, eDataTypes.Number, eDataTypes.String, eDataTypes.Number, eDataTypes.Number, eDataTypes.String, eDataTypes.String, eDataTypes.Number, eDataTypes.Number, eDataTypes.Number}},
             //    OfficeOpenXml.Table.TableStyles.Medium27, true);
 
             ws.Cells["A1"].LoadFromText("1,\"Test\",\"\",\"\"\"\",3\r\n", new ExcelTextFormat() { TextQualifier = '\"' });
@@ -1919,7 +1919,7 @@ namespace EPPlusTest
         [TestMethod]
         public void OpenXlsm()
         {
-            ExcelPackage p = new ExcelPackage(new FileInfo("c:\\temp\\cs1.xlsx"));
+            ExcelPackage p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, "cs1.xlsx")));
             int c = p.Workbook.Worksheets.Count;
             p.Save();
         }
@@ -1941,7 +1941,7 @@ namespace EPPlusTest
             }
             Cells[2, 1].Style.WrapText = true;
             xlWorkSheet.Row(1).Height = 50;
-            xlPackage.SaveAs(new FileInfo("c:\\temp\\Mergebug.xlsx"));
+            xlPackage.SaveAs(new FileInfo(Path.Combine(_worksheetPath, "Mergebug.xlsx")));
         }
         [Ignore]
         [TestMethod]
@@ -1953,25 +1953,25 @@ namespace EPPlusTest
 
             ws.Cells["A1:A10"].Formula = "W2!A1+C1";
             ws.Cells["B1:B10"].FormulaR1C1 = "W2!R1C1+C1";
-            xlPackage.SaveAs(new FileInfo("c:\\temp\\Mergebug.xlsx"));
+            xlPackage.SaveAs(new FileInfo(Path.Combine(_worksheetPath, "Mergebug.xlsx")));
         }
         [Ignore]
         [TestMethod]
         public void ProtectionProblem()
         {
-            var xlPackage = new ExcelPackage(new FileInfo("c:\\temp\\CovenantsCheckReportTemplate.xlsx"));
+            var xlPackage = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, "CovenantsCheckReportTemplate.xlsx")));
             var ws = xlPackage.Workbook.Worksheets.First();
             ws.Protection.SetPassword("Test");
-            xlPackage.SaveAs(new FileInfo("c:\\temp\\Mergebug.xlsx"));
+            xlPackage.SaveAs(new FileInfo(Path.Combine(_worksheetPath, "Mergebug.xlsx")));
         }
         [Ignore]
         [TestMethod]
         public void Nametest()
         {
-            var pck = new ExcelPackage(new FileInfo("c:\\temp\\names.xlsx"));
+            var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, "names.xlsx")));
             var ws = pck.Workbook.Worksheets.First();
             ws.Cells["H37"].Formula = "\"Test\"";
-            pck.SaveAs(new FileInfo(@"c:\\temp\\nametest_new.xlsx"));
+            pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"nametest_new.xlsx")));
         }
         //[Ignore]
         //[TestMethod]
@@ -2179,7 +2179,7 @@ namespace EPPlusTest
         [TestMethod]
         public void ReadPivotTable()
         {
-            ExcelPackage pck = new ExcelPackage(new FileInfo(@"c:\temp\pivot\pivotforread.xlsx"));
+            ExcelPackage pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"pivot\pivotforread.xlsx")));
 
             var pivot1 = pck.Workbook.Worksheets[2].PivotTables[0];
 
@@ -2204,13 +2204,13 @@ namespace EPPlusTest
 
             pck.Workbook.Worksheets[6].Drawings.AddChart("chart1", OfficeOpenXml.Drawing.Chart.eChartType.ColumnStacked3D, pivot6);
 
-            pck.SaveAs(new FileInfo(@"c:\temp\pivot\pivotforread_new.xlsx"));
+            pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"pivot\pivotforread_new.xlsx")));
         }
         [Ignore]
         [TestMethod]
         public void CreatePivotMultData()
         {
-            FileInfo fi = new FileInfo(@"c:\temp\test.xlsx");
+            FileInfo fi = new FileInfo(Path.Combine(_worksheetPath, @"test.xlsx"));
             ExcelPackage pck = new ExcelPackage(fi);
 
             var ws = pck.Workbook.Worksheets.Add("Data");
@@ -2402,7 +2402,7 @@ namespace EPPlusTest
             n.Style.TextRotation = 90;
             ws.Cells["a1:c3"].StyleName = "Normal";
             //  n.CustomBuildin = true;
-            pck.SaveAs(new FileInfo(@"c:\temp\style.xlsx"));
+            pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"style.xlsx")));
         }
         //[Ignore]
         //[TestMethod]
@@ -2424,29 +2424,29 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void Moveissue()
         {
-            _pck = new ExcelPackage(new FileInfo(@"C:\temp\bug\FormulaIssue\PreDelete.xlsx"));
+            _pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\FormulaIssue\PreDelete.xlsx")));
             _pck.Workbook.Worksheets[1].DeleteRow(2, 4);
-            _pck.SaveAs(new FileInfo(@"c:\temp\move.xlsx"));
+            _pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"move.xlsx")));
         }
         [TestMethod, Ignore]
         public void DelCol()
         {
-            _pck = new ExcelPackage(new FileInfo(@"C:\temp\bug\FormulaIssue\PreDeleteCol.xlsx"));
+            _pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\FormulaIssue\PreDeleteCol.xlsx")));
             _pck.Workbook.Worksheets[1].DeleteColumn(5, 1);
-            _pck.SaveAs(new FileInfo(@"c:\temp\move.xlsx"));
+            _pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"move.xlsx")));
         }
         [TestMethod, Ignore]
         public void InsCol()
         {
-            _pck = new ExcelPackage(new FileInfo(@"C:\temp\bug\FormulaIssue\PreDeleteCol.xlsx"));
+            _pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\FormulaIssue\PreDeleteCol.xlsx")));
             _pck.Workbook.Worksheets[1].InsertColumn(4, 5);
-            _pck.SaveAs(new FileInfo(@"c:\temp\move.xlsx"));
+            _pck.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"move.xlsx")));
         }
         [Ignore]
         [TestMethod]
         public void FileLockedProblem()
         {
-            using (ExcelPackage pck = new ExcelPackage(new FileInfo(@"c:\temp\url.xlsx")))
+            using (ExcelPackage pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"url.xlsx"))))
             {
                 pck.Workbook.Worksheets[1].DeleteRow(1, 1);
                 pck.Save();
@@ -2472,7 +2472,7 @@ namespace EPPlusTest
         [TestMethod]
         public void RunSample0()
         {
-            FileInfo newFile = new FileInfo(@"c:\temp\bug\sample0.xlsx");
+            FileInfo newFile = new FileInfo(Path.Combine(_worksheetPath, @"bug\sample0.xlsx"));
             using (ExcelPackage package = new ExcelPackage(newFile))
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
@@ -2494,7 +2494,7 @@ namespace EPPlusTest
         [TestMethod]
         public void Deletews()
         {
-            FileInfo newFile = new FileInfo(@"c:\temp\bug\worksheet error.xlsx");
+            FileInfo newFile = new FileInfo(Path.Combine(_worksheetPath, @"bug\worksheet error.xlsx"));
             using (ExcelPackage package = new ExcelPackage(newFile))
             {
                 var ws1 = package.Workbook.Worksheets.Add("sheet1");
@@ -2509,14 +2509,14 @@ namespace EPPlusTest
             {
                 package.Workbook.Worksheets.Delete(1);
                 var ws3 = package.Workbook.Worksheets.Add("sheet3");
-                package.SaveAs(new FileInfo(@"c:\temp\bug\worksheet error_save.xlsx"));
+                package.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"bug\worksheet error_save.xlsx")));
             }
         }
 
         [TestMethod, Ignore]
         public void Issue15207()
         {
-            using (ExcelPackage ep = new ExcelPackage(new FileInfo(@"c:\temp\bug\worksheet error.xlsx")))
+            using (ExcelPackage ep = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\worksheet error.xlsx"))))
             {
                 ExcelWorkbook wb = ep.Workbook;
 
@@ -2885,7 +2885,7 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void SaveToStream()
         {
-            var stream = new MemoryStream(File.ReadAllBytes(@"c:\temp\book1.xlsx"));
+            var stream = new MemoryStream(File.ReadAllBytes(Path.Combine(_worksheetPath, @"book1.xlsx")));
             var excelPackage = new ExcelPackage(stream);
             excelPackage.Workbook.Worksheets.Add("test");
             excelPackage.Save();
@@ -2911,7 +2911,7 @@ namespace EPPlusTest
             ws.Cells["a1:Z1"].Value = "Test";
             ws.Cells["a1:FF33"].AutoFitColumns(0);
             ws.Column(26).ColumnMax = ExcelPackage.MaxColumns;
-            excelPackage.SaveAs(new FileInfo(@"c:\temp\autofit.xlsx"));
+            excelPackage.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"autofit.xlsx")));
         }
 
         [TestMethod]

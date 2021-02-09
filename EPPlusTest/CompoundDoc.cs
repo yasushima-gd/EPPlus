@@ -16,7 +16,7 @@ namespace EPPlusTest
     /// Summary description for CompoundDoc
     /// </summary>
     [TestClass]
-    public class CompoundDoc
+    public class CompoundDoc : TestBase
     {
         public CompoundDoc()
         {
@@ -31,7 +31,7 @@ namespace EPPlusTest
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
+        new public TestContext TestContext
         {
             get
             {
@@ -68,18 +68,18 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void Read()
         {
-           //var doc = File.ReadAllBytes(@"c:\temp\vbaProject.bin");
-           var doc = File.ReadAllBytes(@"c:\temp\vba.bin");
+           //var doc = File.ReadAllBytes(Path.Combine(_worksheetPath, @"vbaProject.bin"));
+           var doc = File.ReadAllBytes(Path.Combine(_worksheetPath, @"vba.bin"));
            var cd = new CompoundDocumentFile(doc);
            var ms = new MemoryStream();
            cd.Write(ms);
            printitems(cd.RootItem);
-           File.WriteAllBytes(@"c:\temp\vba.bin", ms.ToArray());
+           File.WriteAllBytes(Path.Combine(_worksheetPath, @"vba.bin"), ms.ToArray());
         }
 
         private void printitems(CompoundDocumentItem item)
         {
-            File.AppendAllText(@"c:\temp\items.txt", item.Name+ "\t");            
+            File.AppendAllText(Path.Combine(_worksheetPath, @"items.txt"), item.Name+ "\t");            
             foreach(var c in item.Children)
             {
                 printitems(c);
@@ -132,23 +132,23 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void ReadEncLong()
         {
-            var doc=File.ReadAllBytes(@"c:\temp\EncrDocRead.xlsx");
+            var doc=File.ReadAllBytes(Path.Combine(_worksheetPath, @"EncrDocRead.xlsx"));
             var cd = new CompoundDocumentFile(doc);
             var ms = new MemoryStream();
             cd.Write(ms);
 
-            File.WriteAllBytes(@"c:\temp\vba.xlsx", ms.ToArray());
+            File.WriteAllBytes(Path.Combine(_worksheetPath, @"vba.xlsx"), ms.ToArray());
         }
         [TestMethod, Ignore]
         public void ReadVba()
         {
-            var p = new ExcelPackage(new FileInfo(@"c:\temp\pricecheck.xlsm"));
+            var p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"pricecheck.xlsm")));
             var vba = p.Workbook.VbaProject;
-            p.SaveAs(new FileInfo(@"c:\temp\pricecheckSaved.xlsm"));
+            p.SaveAs(new FileInfo(Path.Combine(_worksheetPath, @"pricecheckSaved.xlsm")));
         }
         FileInfo TempFile(string name)
         {
-            var baseFolder = Path.Combine(@"c:\temp\bug\");
+            var baseFolder = Path.Combine(Path.Combine(_worksheetPath, @"bug\"));
             return new FileInfo(Path.Combine(baseFolder, name));
         }
         [TestMethod, Ignore]
@@ -173,11 +173,11 @@ namespace EPPlusTest
         {
             int Rows = 1000000;
             int colMult = 20;
-            FileInfo newFile = new FileInfo(@"C:\temp\bug\sample7compdoctest.xlsx");
+            FileInfo newFile = new FileInfo(Path.Combine(_worksheetPath, @"bug\sample7compdoctest.xlsx"));
             if (newFile.Exists)
             {
                 newFile.Delete();  // ensures we create a new workbook
-                newFile = new FileInfo(@"C:\temp\bug\sample7compdoctest.xlsx");
+                newFile = new FileInfo(Path.Combine(_worksheetPath, @"bug\sample7compdoctest.xlsx"));
             }
             using (ExcelPackage package = new ExcelPackage())
             {
@@ -267,16 +267,16 @@ namespace EPPlusTest
         [TestMethod, Ignore]
         public void ReadPerfTest()
         {
-            var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7compdoctest.xlsx"), "");
-            //var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7compdoctest_4.5.xlsx"), "");
-            //var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7compdoctest.310k.xlsx"), "");
+            var p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\sample7compdoctest.xlsx")), "");
+            //var p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\sample7compdoctest_4.5.xlsx")), "");
+            //var p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\sample7compdoctest.310k.xlsx")), "");
         }
         [TestMethod, Ignore]
         public void ReadVbaIssue107()
         {
-            //var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\report.xlsm"));
-            //var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\report411.xlsm"));
-            var p = new ExcelPackage(new FileInfo(@"c:\temp\bug\sample7.xlsx"),"");
+            //var p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\report.xlsm")));
+            //var p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\report411.xlsm")));
+            var p = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"bug\sample7.xlsx")),"");
             var vba = p.Workbook.VbaProject;
         }
         

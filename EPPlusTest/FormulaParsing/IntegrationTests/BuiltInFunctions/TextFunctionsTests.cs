@@ -9,7 +9,7 @@ using OfficeOpenXml.FormulaParsing.Logging;
 namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
 {
     [TestClass]
-    public class TextFunctionsTests
+    public class TextFunctionsTests : TestBase
     {
         [TestMethod]
         public void HyperlinkShouldHandleReference()
@@ -133,9 +133,9 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.BuiltInFunctions
         {
             var sw = new Stopwatch();
             sw.Start();
-            using (var pck = new ExcelPackage(new FileInfo(@"c:\temp\denis.xlsx")))
+            using (var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"denis.xlsx"))))
             {
-                var logger = LoggerFactory.CreateTextFileLogger(new FileInfo(@"c:\temp\log1.txt"));
+                var logger = LoggerFactory.CreateTextFileLogger(new FileInfo(Path.Combine(_worksheetPath, @"log1.txt")));
                 pck.Workbook.FormulaParser.Configure(x => x.AttachLogger(logger));
                 pck.Workbook.Calculate();
                 //

@@ -12,7 +12,7 @@ using OfficeOpenXml;
 namespace EPPlusTest.Excel.Functions
 {
     [TestClass]
-    public class LogicalFunctionsTests
+    public class LogicalFunctionsTests : TestBase
     {
         private ParsingContext _parsingContext = ParsingContext.Create();
 
@@ -28,7 +28,7 @@ namespace EPPlusTest.Excel.Functions
         [TestMethod, Ignore]
         public void IfShouldIgnoreCase()
         {
-            using (var pck = new ExcelPackage(new FileInfo(@"c:\temp\book1.xlsx")))
+            using (var pck = new ExcelPackage(new FileInfo(Path.Combine(_worksheetPath, @"book1.xlsx"))))
             {
                 pck.Workbook.Calculate();
                 Assert.AreEqual("Sant", pck.Workbook.Worksheets.First().Cells["C3"].Value);
