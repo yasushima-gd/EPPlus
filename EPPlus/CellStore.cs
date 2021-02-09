@@ -628,19 +628,23 @@ internal class CellStore<T> : IDisposable// : IEnumerable<ulong>, IEnumerator<ul
                 if (pos < 0)
                 {
                     pos = ~pos;
-                    if (pos - 1 < 0 || _columnIndex[col]._pages[pos - 1].IndexOffset + PageSize - 1 < Row)
-                    {
+                    if (pos - 1 < 0)
                         AddPage(_columnIndex[col], pos, page);
-                    }
                     else
                     {
-                        pos--;
+                        var prevPage = _columnIndex[col]._pages[pos - 1];
+                        int prevPageEndRow = Math.Max(
+                                prevPage.IndexOffset + PageSize - 1,
+                                prevPage.Offset + prevPage.Rows[prevPage.RowCount - 1].Index
+                        );
+                        if (prevPageEndRow < Row)
+                            AddPage(_columnIndex[col], pos, page);
+                        else
+                            pos--;
                     }
                 }
                 if (pos >= _columnIndex[col].PageCount)
-                {
                     AddPage(_columnIndex[col], pos, page);
-                }
                 var pageItem = _columnIndex[col]._pages[pos];
                 if (!(pageItem.MinIndex <= Row && pageItem.MaxIndex >= Row) && pageItem.IndexExpanded > Row)   //TODO: Fix issue
                 {
@@ -717,19 +721,23 @@ internal class CellStore<T> : IDisposable// : IEnumerable<ulong>, IEnumerator<ul
                             if (pos < 0)
                             {
                                 pos = ~pos;
-                                if (pos - 1 < 0 || _columnIndex[col]._pages[pos - 1].IndexOffset + PageSize - 1 < rowIx)
-                                {
+                                if (pos - 1 < 0)
                                     AddPage(_columnIndex[col], pos, page);
-                                }
                                 else
                                 {
-                                    pos--;
+                                    var prevPage = _columnIndex[col]._pages[pos - 1];
+                                    int prevPageEndRow = Math.Max(
+                                            prevPage.IndexOffset + PageSize - 1,
+                                            prevPage.Offset + prevPage.Rows[prevPage.RowCount - 1].Index
+                                    );
+                                    if (prevPageEndRow < rowIx)
+                                        AddPage(_columnIndex[col], pos, page);
+                                    else
+                                        pos--;
                                 }
                             }
                             if (pos >= _columnIndex[col].PageCount)
-                            {
                                 AddPage(_columnIndex[col], pos, page);
-                            }
                             var pageItem = _columnIndex[col]._pages[pos];
                             if (pageItem.IndexOffset > rowIx)
                             {
@@ -787,19 +795,23 @@ internal class CellStore<T> : IDisposable// : IEnumerable<ulong>, IEnumerator<ul
                 if (pos < 0)
                 {
                     pos = ~pos;
-                    if (pos - 1 < 0 || _columnIndex[col]._pages[pos - 1].IndexOffset + PageSize - 1 < Row)
-                    {
+                    if (pos - 1 < 0)
                         AddPage(_columnIndex[col], pos, page);
-                    }
                     else
                     {
-                        pos--;
+                        var prevPage = _columnIndex[col]._pages[pos - 1];
+                        int prevPageEndRow = Math.Max(
+                                prevPage.IndexOffset + PageSize - 1,
+                                prevPage.Offset + prevPage.Rows[prevPage.RowCount - 1].Index
+                        );
+                        if (prevPageEndRow < Row)
+                            AddPage(_columnIndex[col], pos, page);
+                        else
+                            pos--;
                     }
                 }
                 if (pos >= _columnIndex[col].PageCount)
-                {
                     AddPage(_columnIndex[col], pos, page);
-                }
                 var pageItem = _columnIndex[col]._pages[pos];
                 if (pageItem.IndexOffset > Row)
                 {
@@ -1552,14 +1564,15 @@ internal class CellStore<T> : IDisposable// : IEnumerable<ulong>, IEnumerator<ul
     {
         AddPage(column, pos);
         column._pages[pos] = new PageIndex() { Index = index };
-        if (pos > 0)
-        {
-            var pp = column._pages[pos - 1];
-            if (pp.RowCount > 0 && pp.Rows[pp.RowCount - 1].Index > PageSize)
-            {
-                column._pages[pos].Offset = pp.Rows[pp.RowCount - 1].Index - PageSize;
-            }
-        }
+        if (pos <= 0)
+            return;
+        var pp = column._pages[pos - 1];
+        if (pp.RowCount <= 0)
+            return;
+        var ppLastRowIndex = pp.IndexOffset + pp.Rows[pp.RowCount - 1].Index;
+        var newPageTopIndex = PageSize * index;
+        if (ppLastRowIndex >= newPageTopIndex)
+            column._pages[pos].Offset = ppLastRowIndex - newPageTopIndex + 1;
     }
     /// <summary>
     /// Add a new page to the collection
